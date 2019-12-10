@@ -133,9 +133,11 @@ jobs:
                  "$UPLOAD_URL?name=$(basename $UPLOAD_FILE)"
 workflows:
   version: 2
-  build-test-deploy:
+  test:
     jobs:
       - google_test
+  build-deploy:
+    jobs:
       - build
       - deploy_library:
           requires:
