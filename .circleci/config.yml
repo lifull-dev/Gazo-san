@@ -116,6 +116,7 @@ jobs:
       OWNER: hikimochi
       REPO: Gazo-san
       UPLOAD_FILE: /tmp/build/libimageDiffCalc.a
+      CIRCLE_TAG: 0.0.2
     steps:
       - attach_workspace:
           at: /tmp/build
@@ -136,22 +137,26 @@ workflows:
   test:
     jobs:
       - google_test
-  build-deploy:
-    jobs:
-      - build:
-          filters:
-            tags:
-              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-            branches:
-              ignore: /.*/
+      - build
       - deploy_library:
           requires:
             - build
-          filters:
-            tags:
-              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-            branches:
-              ignore: /.*/
+  # build-deploy:
+  #   jobs:
+  #     - build:
+  #         filters:
+  #           tags:
+  #             only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+  #           branches:
+  #             ignore: /.*/
+  #     - deploy_library:
+  #         requires:
+  #           - build
+  #         filters:
+  #           tags:
+  #             only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+  #           branches:
+  #             ignore: /.*/
       # - build_and_deploy_image:
       #     requires:
       #       - build
