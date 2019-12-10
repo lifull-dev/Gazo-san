@@ -126,7 +126,8 @@ jobs:
           UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
       - run:
         name: Upload assets
-        command: curl -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: $(file -b --mime-type $UPLOAD_FILE)" --data-binary @$UPLOAD_FILE "$UPLOAD_URL?name=$(basename $UPLOAD_FILE)"
+        command: |
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: $(file -b --mime-type $UPLOAD_FILE)" --data-binary @$UPLOAD_FILE "$UPLOAD_URL?name=$(basename $UPLOAD_FILE)"
 workflows:
   version: 2
   build-test-deploy:
