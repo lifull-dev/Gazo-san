@@ -126,6 +126,9 @@ jobs:
             UPLOAD_URL_RAW=$(curl -s -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG" | jq '.upload_url')
             UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
       - run:
+          name: echo
+          command: echo $UPLOAD_URL
+      - run:
           name: Upload assets
           command: |
             curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
