@@ -122,19 +122,11 @@ jobs:
       - attach_workspace:
           at: /tmp/build
       - run:
-          name: Store upload url
+          name: Store upload url and upload assets
           command: |
             curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$HOGE"
             UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$HOGE" | jq '.upload_url')
-            echo $UPLOAD_URL_RAW
-            export UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
-            echo $UPLOAD_URL
-      - run:
-          name: echo
-          command: echo $UPLOAD_URL
-      - run:
-          name: Upload assets
-          command: |
+            UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
             curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
                  -H "Content-Type: $(file -b --mime-type $UPLOAD_FILE)" \
                  --data-binary @$UPLOAD_FILE \
