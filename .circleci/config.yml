@@ -113,7 +113,7 @@ jobs:
     docker:
       - image: circleci/node:stretch
     environment:
-      OWNER: hikimochi
+      OWNER: lifull-dev
       REPO: Gazo-san
       UPLOAD_FILE: /tmp/build/libimageDiffCalc.a
     steps:
@@ -151,11 +151,11 @@ workflows:
               only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
             branches:
               ignore: /.*/
-      # - build_and_deploy_image:
-      #     requires:
-      #       - build
-      #     filters:
-      #       tags:
-      #         only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-      #       branches:
-      #         ignore: /.*/
+      - build_and_deploy_image:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+            branches:
+              ignore: /.*/
