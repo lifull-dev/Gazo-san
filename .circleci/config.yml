@@ -122,7 +122,9 @@ jobs:
       - run:
           name: Store upload url and upload assets
           command: |
-            UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG" | jq '.upload_url')
+            UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" \
+                 "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG" \
+                 | jq '.upload_url')
             UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
             curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
                  -H "Content-Type: $(file -b --mime-type $UPLOAD_FILE)" \
