@@ -1,0 +1,9 @@
+# Git
+.gitignore
+
+# Test
+tests
+
+# CI
+.circleci
+.codeclimate*
