@@ -138,7 +138,7 @@ workflows:
       - google_test
   build-deploy:
     jobs:
-      - build
+      - build:
           filters:
             tags:
               only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
