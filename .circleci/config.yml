@@ -124,10 +124,13 @@ jobs:
         command: |
           UPLOAD_URL_RAW=$(curl -s -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG" | jq '.upload_url')
           UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
-      - run:
-        name: Upload assets
-        command: |
-          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: $(file -b --mime-type $UPLOAD_FILE)" --data-binary @$UPLOAD_FILE "$UPLOAD_URL?name=$(basename $UPLOAD_FILE)"
+      # - run:
+      #   name: Upload assets
+      #   command: |
+      #     curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+      #          -H "Content-Type: $(file -b --mime-type $UPLOAD_FILE)" \
+      #          --data-binary @$UPLOAD_FILE \
+      #          "$UPLOAD_URL?name=$(basename $UPLOAD_FILE)"
 workflows:
   version: 2
   build-test-deploy:
