@@ -139,6 +139,11 @@ workflows:
   build-deploy:
     jobs:
       - build
+          filters:
+            tags:
+              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+            branches:
+              ignore: /.*/
       - deploy_library:
           requires:
             - build
