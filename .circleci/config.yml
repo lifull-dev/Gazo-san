@@ -117,14 +117,15 @@ jobs:
       REPO: Gazo-san
       UPLOAD_FILE: /tmp/build/libimageDiffCalc.a
       CIRCLE_TAG: 0.0.2
+      HOGE: 0.0.2
     steps:
       - attach_workspace:
           at: /tmp/build
       - run:
           name: Store upload url
           command: |
-            curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG"
-            UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG" | jq '.upload_url')
+            curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$HOGE"
+            UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$HOGE" | jq '.upload_url')
             echo $UPLOAD_URL_RAW
             export UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
             echo $UPLOAD_URL
