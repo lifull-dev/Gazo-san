@@ -116,16 +116,13 @@ jobs:
       OWNER: hikimochi
       REPO: Gazo-san
       UPLOAD_FILE: /tmp/build/libimageDiffCalc.a
-      CIRCLE_TAG: v0.0.2
-      HOGE: v0.0.2
     steps:
       - attach_workspace:
           at: /tmp/build
       - run:
           name: Store upload url and upload assets
           command: |
-            curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$HOGE"
-            UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$HOGE" | jq '.upload_url')
+            UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG" | jq '.upload_url')
             UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
             curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
                  -H "Content-Type: $(file -b --mime-type $UPLOAD_FILE)" \
@@ -136,26 +133,22 @@ workflows:
   test:
     jobs:
       - google_test
-      - build
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+            branches:
+              ignore: /.*/
       - deploy_library:
           requires:
             - build
-  # build-deploy:
-  #   jobs:
-  #     - build:
-  #         filters:
-  #           tags:
-  #             only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-  #           branches:
-  #             ignore: /.*/
-  #     - deploy_library:
-  #         requires:
-  #           - build
-  #         filters:
-  #           tags:
-  #             only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-  #           branches:
-  #             ignore: /.*/
+          filters:
+            tags:
+              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+            branches:
+              ignore: /.*/
       # - build_and_deploy_image:
       #     requires:
       #       - build
