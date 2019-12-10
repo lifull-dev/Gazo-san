@@ -13,7 +13,7 @@ Detect difference between two images. By separating each image into few parts, G
 | Output |
 | :--: |
 | output_diff.png |
-| <img src="https://user-images.githubusercontent.com/27658353/70488539-52d68680-1b3c-11ea-8551-a07ff571a72a.png" width="80%" > |
+| <img src="https://user-images.githubusercontent.com/27658353/70491691-502c5f00-1b45-11ea-9bdc-8cf1f1189593.png" width="80%" > |
 
 
 ### With option --create-change-image
@@ -24,12 +24,12 @@ Detect difference between two images. By separating each image into few parts, G
 | Output | Output |
 | :--: | :--: |
 | output_delete.png | output_add.png |
-| <img src="https://user-images.githubusercontent.com/27658353/70488535-50742c80-1b3c-11ea-995c-deb116df73cb.png" width="50%" >| <img src="https://user-images.githubusercontent.com/27658353/70488531-4e11d280-1b3c-11ea-96f7-e1be18bce198.png" width="50%" > |
+| <img src="https://user-images.githubusercontent.com/27658353/70491689-4e629b80-1b45-11ea-98e9-f986bfbaae63.png" width="50%" >| <img src="https://user-images.githubusercontent.com/27658353/70491682-4c004180-1b45-11ea-97a1-bfc77b31e6a0.png" width="50%" > |
 
 | Output |
 | :--: |
 | output_diff.png |
-| <img src="https://user-images.githubusercontent.com/27658353/70488539-52d68680-1b3c-11ea-8551-a07ff571a72a.png" width="80%" > |
+| <img src="https://user-images.githubusercontent.com/27658353/70491691-502c5f00-1b45-11ea-9bdc-8cf1f1189593.png" width="80%" > |
 
 Output file:
 - output_diff.png: Show the difference on matched parts, it's created base on old image.
