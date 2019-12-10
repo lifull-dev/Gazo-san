@@ -116,8 +116,8 @@ jobs:
       OWNER: hikimochi
       REPO: Gazo-san
       UPLOAD_FILE: /tmp/build/libimageDiffCalc.a
-      CIRCLE_TAG: 0.0.2
-      HOGE: 0.0.2
+      CIRCLE_TAG: v0.0.2
+      HOGE: v0.0.2
     steps:
       - attach_workspace:
           at: /tmp/build
