@@ -123,6 +123,7 @@ jobs:
       - run:
           name: Store upload url
           command: |
+            curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG"
             UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG" | jq '.upload_url')
             echo $UPLOAD_URL_RAW
             export UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
