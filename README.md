@@ -54,12 +54,18 @@ Each color stands for:
 
 
 ## How to build Gazo-san
+
+### Ubuntu
+
 1. Download static link library file
+
+```bash
+curl -OLsS https://github.com/lifull-dev/Gazo-san/releases/download/{VERSION}/libimageDiffCalc.a
 ```
-wait for upload
-```
+
 2. Compile main.cpp
-```
+
+```bash
 g++ -std=c++11 ./src/main.cpp -L./ -limageDiffCalc -o gazosan `pkg-config --libs opencv`
 ```
 

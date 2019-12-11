@@ -67,7 +67,7 @@ jobs:
       - run:
           name: syetem test
           command: ./test
-  build:
+  build_library:
     working_directory: /tmp/build
     docker:
       - image: rhikimochi/opencv-docker:v0.14
@@ -88,8 +88,7 @@ jobs:
     working_directory: ~/build
     machine: true
     environment:
-      DOCKER_USER: lifullsetg # After publish, move to circle environment variable.
-      DOCKER_REPO: gazo-san
+      DOCKER_HUB_REPO: gazo-san
     steps:
       - checkout
       - attach_workspace:
@@ -98,44 +97,61 @@ jobs:
           name: Move library
           command: mv /tmp/build/libimageDiffCalc.a ~/build/
       - run:
-          name: Build image
-          command: docker build -t "$DOCKER_HUB_USER"/"$DOCKER_REPO":"${CIRCLE_TAG/v/}" .
-      # - run:
-      #     name: Login docker hub
-      #     command: docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_TOKEN"
-      # - run:
-      #     name: Push image
-      #     command: docker push "$DOCKER_HUB_USER"/"$DOCKER_REPO":"${CIRCLE_TAG/v/}"
-      # - run:
-      #     name: Logout docker
-      #     command: docker logout
+          name: Build and tagged image
+          command: | 
+            docker build -t "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}" .
+            docker tag "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}" "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":latest
+      - run:
+          name: Login docker hub
+          command: docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_TOKEN"
+      - run:
+          name: Push image
+          command: |
+            docker push "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}"
+            docker push "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":latest
+      - run:
+          name: Logout docker
+          command: docker logout
   deploy_library:
     working_directory: ~/deploy
     docker:
       - image: circleci/node:stretch
+    environment:
+      OWNER: lifull-dev
+      REPO: Gazo-san
+      UPLOAD_FILE: /tmp/build/libimageDiffCalc.a
     steps:
       - attach_workspace:
           at: /tmp/build
-      - run: echo "release process"
+      - run:
+          name: Store upload url and upload assets
+          command: |
+            UPLOAD_URL_RAW=$(curl -X GET -H "Authorization: token $GITHUB_TOKEN" \
+                 "https://api.github.com/repos/$OWNER/$REPO/releases/tags/$CIRCLE_TAG" \
+                 | jq '.upload_url')
+            UPLOAD_URL=$(echo ${UPLOAD_URL_RAW%\{*} | tr -d \")
+            curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+                 -H "Content-Type: $(file -b --mime-type $UPLOAD_FILE)" \
+                 --data-binary @$UPLOAD_FILE \
+                 "$UPLOAD_URL?name=$(basename $UPLOAD_FILE)"
 workflows:
   version: 2
-  build-test-deploy:
+  test:
     jobs:
       - google_test
-      - build
+  build-deploy:
+    jobs:
+      - build_library:
+          filters: &filters
+            tags:
+              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
+            branches:
+              ignore: /.*/
       - deploy_library:
           requires:
-            - build
-          filters:
-            tags:
-              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-            branches:
-              ignore: /.*/
+            - build_library
+          filters: *filters
       - build_and_deploy_image:
           requires:
-            - build
-          filters:
-            tags:
-              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-            branches:
-              ignore: /.*/
+            - build_library
+          filters: *filters
