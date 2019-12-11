@@ -56,7 +56,7 @@ Each color stands for:
 1. Download static link library file
 
 ```bash
-curl -L https://github.com/lifull-dev/Gazo-san/releases/download/VERSION/libimageDiffCalc.a
+curl -OLsS https://github.com/lifull-dev/Gazo-san/releases/download/{VERSION}/libimageDiffCalc.a
 ```
 
 2. Compile main.cpp
