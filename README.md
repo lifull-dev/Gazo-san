@@ -1,7 +1,7 @@
 # Gazo-san
 ![logo](docs/assets/logo.png)
 
-![Version](https://shields-staging.herokuapp.com/github/v/release/lifull-dev/Gazo-san)
+![Version](https://shields-staging.herokuapp.com/github/v/release/lifull-dev/Gazo-san) [![CircleCI](https://circleci.com/gh/lifull-dev/Gazo-san.svg?style=svg)](https://circleci.com/gh/lifull-dev/Gazo-san)
 
 Detect difference between two images.
 
