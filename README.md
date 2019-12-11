@@ -11,7 +11,7 @@ By separating each image into few parts, Gazo-san only detects difference on mat
 ```
 | Input | Input |
 | :--: | :--: |
-| test_image_new.png | test_image_old.png |
+| test_image_old.png | test_image_new.png |
 | <img src="tests/images/test_image_old.png" width="50%" /> | <img src="tests/images/test_image_new.png" width="50%" /> |
 
 | Output |
