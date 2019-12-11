@@ -98,13 +98,17 @@ jobs:
           command: mv /tmp/build/libimageDiffCalc.a ~/build/
       - run:
           name: Build image
-          command: docker build -t "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}" .
+          command: | 
+            docker build -t "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}" .
+            docker build -t "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":latest .
       - run:
           name: Login docker hub
           command: docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_TOKEN"
       - run:
           name: Push image
-          command: docker push "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}"
+          command: |
+            docker push "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}"
+            docker push "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":latest
       - run:
           name: Logout docker
           command: docker logout
