@@ -67,7 +67,7 @@ jobs:
       - run:
           name: syetem test
           command: ./test
-  build:
+  build_library:
     working_directory: /tmp/build
     docker:
       - image: rhikimochi/opencv-docker:v0.14
@@ -97,10 +97,10 @@ jobs:
           name: Move library
           command: mv /tmp/build/libimageDiffCalc.a ~/build/
       - run:
-          name: Build image
+          name: Build and tagged image
           command: | 
             docker build -t "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}" .
-            docker build -t "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":latest .
+            docker tag "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}" "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":latest
       - run:
           name: Login docker hub
           command: docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_TOKEN"
@@ -141,25 +141,17 @@ workflows:
       - google_test
   build-deploy:
     jobs:
-      - build:
-          filters:
+      - build_library:
+          filters: &filters
             tags:
               only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
             branches:
               ignore: /.*/
       - deploy_library:
           requires:
-            - build
-          filters:
-            tags:
-              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-            branches:
-              ignore: /.*/
+            - build_library
+          filters: *filters
       - build_and_deploy_image:
           requires:
-            - build
-          filters:
-            tags:
-              only: /^v[0-9]{1,}(\.[0-9]{1,}){2}$/
-            branches:
-              ignore: /.*/
+            - build_library
+          filters: *filters
