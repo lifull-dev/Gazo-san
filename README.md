@@ -83,9 +83,14 @@ g++ -std=c++11 ./src/main.cpp -L./ -limageDiffCalc -o gazosan `pkg-config --libs
 sh .circleci/cxxops.sh
 ```
 
-2. Compile main.cpp
+2. Add include in main.cpp
+```
+#include "imageDiffCalc.cpp"
+```
+
+3. Compile main.cpp
 ```bash
-g++ -std=c++11 -I include/ ./src/main.cpp -o gazosan `pkg-config --libs --cflags opencv` 
+g++ -std=c++11 -I include/ ./src/main.cpp -o gazosan `pkg-config --libs --cflags opencv`
 ```
 
 ## Execute Gazo-san
