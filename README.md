@@ -71,6 +71,19 @@ curl -OLsS https://github.com/lifull-dev/Gazo-san/releases/download/{VERSION}/li
 g++ -std=c++11 ./src/main.cpp -L./ -limageDiffCalc -o gazosan `pkg-config --libs opencv`
 ```
 
+### Build in local machine
+
+1. Create directory and Download [cxxopts.hpp](https://github.com/jarro2783/cxxopts/blob/master/include/cxxopts.hpp) in to include directory.
+
+```bash
+sh .circleci/cxxops.sh
+```
+
+2. Compile main.cpp
+```bash
+g++ -std=c++11 `pkg-config --libs --cflags opencv` -I include/ ./src/imageDiffCalc.cpp -o imageDiff
+```
+
 ## Execute Gazo-san
 
 Execute image difference calculate.
