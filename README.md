@@ -57,7 +57,9 @@ Each color stands for:
 
 ## How to build Gazo-san
 
-### Ubuntu
+### Compile with static link library
+
+> Works only on Ubuntu
 
 1. Download static link library file
 
@@ -69,6 +71,26 @@ curl -OLsS https://github.com/lifull-dev/Gazo-san/releases/download/{VERSION}/li
 
 ```bash
 g++ -std=c++11 ./src/main.cpp -L./ -limageDiffCalc -o gazosan `pkg-config --libs opencv`
+```
+
+### Compile with source code
+
+> Works on linux machine or Mac
+
+1. Create directory and Download [cxxopts.hpp](https://github.com/jarro2783/cxxopts/blob/master/include/cxxopts.hpp) into include directory.
+
+```bash
+sh .circleci/cxxops.sh
+```
+
+2. Add include in main.cpp
+```
+#include "imageDiffCalc.cpp"
+```
+
+3. Compile main.cpp
+```bash
+g++ -std=c++11 -I include/ ./src/main.cpp -o gazosan `pkg-config --libs --cflags opencv`
 ```
 
 ## Execute Gazo-san
