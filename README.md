@@ -73,7 +73,7 @@ g++ -std=c++11 ./src/main.cpp -L./ -limageDiffCalc -o gazosan `pkg-config --libs
 
 ### Build in local machine
 
-1. Create directory and Download [cxxopts.hpp](https://github.com/jarro2783/cxxopts/blob/master/include/cxxopts.hpp) in to include directory.
+1. Create directory and Download [cxxopts.hpp](https://github.com/jarro2783/cxxopts/blob/master/include/cxxopts.hpp) into include directory.
 
 ```bash
 sh .circleci/cxxops.sh
