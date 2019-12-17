@@ -17,7 +17,7 @@ docker pull lifullsetg/gazo-san
 
 Execute Gazo-san by container
 ```
-docker run -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output
+docker run --rm -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output
 ```
 
 | Input | Input |
@@ -33,7 +33,7 @@ docker run -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image
 
 ### With option --create-change-image
 ```
-docker run -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output --create-change-image
+docker run --rm -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output --create-change-image
 ```
 
 | Output | Output |
