@@ -8,9 +8,18 @@ Detect difference between two images.
 By separating each image into few parts, Gazo-san only detects difference on matched parts between two images. Optional shows decrease or increase part on two images.
 
 ## Quick Start
+You use Gazo-san with docker.
+
+Get image from docker hub
 ```
-./gazosan tests/images/test_image_new.png tests/images/test_image_old.png output
+docker pull lifullsetg/gazo-san
 ```
+
+Execute Gazo-san by container
+```
+docker run --rm -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output
+```
+
 | Input | Input |
 | :--: | :--: |
 | test_image_old.png | test_image_new.png |
@@ -24,7 +33,7 @@ By separating each image into few parts, Gazo-san only detects difference on mat
 
 ### With option --create-change-image
 ```
-./gazosan tests/images/test_image_new.png tests/images/test_image_old.png output --create-change-image
+docker run --rm -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output --create-change-image
 ```
 
 | Output | Output |
