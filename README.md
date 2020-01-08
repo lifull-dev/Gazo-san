@@ -8,7 +8,7 @@ Detect difference between two images.
 By separating each image into few parts, Gazo-san only detects difference on matched parts between two images. Optional shows decrease or increase part on two images.
 
 ## Quick Start
-You use Gazo-san with docker.
+You can use Gazo-san with docker.
 
 Get image from docker hub
 ```
