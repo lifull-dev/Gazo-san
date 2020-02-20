@@ -86,6 +86,8 @@ g++ -std=c++11 ./src/main.cpp -L./ -limageDiffCalc -o gazosan `pkg-config --libs
 
 > Works on linux machine or Mac
 
+> Works on gcc version 4.2.1
+
 1. Create directory and Download [cxxopts.hpp](https://github.com/jarro2783/cxxopts/blob/master/include/cxxopts.hpp) into include directory.
 
 ```bash
@@ -98,6 +100,7 @@ sh .circleci/cxxops.sh
 ```
 
 3. Compile main.cpp
+
 ```bash
 g++ -std=c++11 -I include/ ./src/main.cpp -o gazosan `pkg-config --libs --cflags opencv`
 ```
