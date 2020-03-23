@@ -24,8 +24,7 @@ commands:
     steps:
       - run:
           name: prepare build directory
-          command: |
-            mkdir build && cd build
+          command: mkdir build && cd build
 jobs:
   google_test:
     working_directory: ~/test

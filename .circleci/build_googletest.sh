@@ -1,11 +1,11 @@
 #!/bin/bash
-          
+
 GOOGLETEST_VER=1.10.0
 curl -OLsS https://github.com/google/googletest/archive/release-"$GOOGLETEST_VER".tar.gz
 tar -zxvf release-"$GOOGLETEST_VER".tar.gz
 cd googletest-release-"$GOOGLETEST_VER" || exit
 mkdir build
-cd build || exit 
+cd build || exit
 cmake ..
 make
 cd ../../ || exit
