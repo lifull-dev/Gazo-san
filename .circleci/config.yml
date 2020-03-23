@@ -4,9 +4,21 @@ commands:
   prepare_for_test:
     description: "Prepare for test."
     steps:
+      - restore_cache:
+          keys:
+            - v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{ checksum ".circleci/build_googletest.sh" }}
+            - v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-
+            - v1-gtest-cache-{{ .Branch }}-
       - run:
           name: download and build google test
-          command: bash .circleci/build_googletest.sh
+          command: |
+            if [ ! -d tests/googletest ]; then
+              bash .circleci/build_googletest.sh;
+            fi
+      - save_cache:
+          key: v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum ".circleci/build_googletest.sh" }}
+          paths:
+            - tests/googletest
   prepare_for_cmake:
     description: "Prepare directory for cmake."
     steps:
