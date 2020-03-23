@@ -19,6 +19,12 @@ commands:
           key: v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum ".circleci/build_googletest.sh" }}
           paths:
             - tests/googletest
+  prepare_for_cmake:
+    description: "Prepare directory for cmake."
+    steps:
+      - run:
+          name: prepare build directory
+          command: mkdir build
 jobs:
   google_test:
     working_directory: ~/test
@@ -27,25 +33,19 @@ jobs:
     steps:
       - checkout
       - prepare_for_test
-      - run:
-          name: prepare build directory
-          command: |
-            mkdir build && cd build && ls && pwd
+      - prepare_for_cmake
       - run:
           name: build unit test
           command: |
-            ls && pwd && cmake .. -DGTEST=ON -DTEST_LEVEL=unit && make
+            cd build && cmake .. -DGTEST=ON -DTEST_LEVEL=unit && make
       - run:
           name: build integration test
           command: |
-            cmake .. -DGTEST=ON -DTEST_LEVEL=integration && make
+            cd build && cmake .. -DGTEST=ON -DTEST_LEVEL=integration && make
       - run:
           name: build system test
           command: |
-            cmake .. -DGTEST=ON -DTEST_LEVEL=system && make
-      - run:
-          name: back to working directory
-          command: cd ..
+            cd build && cmake .. -DGTEST=ON -DTEST_LEVEL=system && make
       - run:
           name: execute unit test
           command: ./gazosan_unit_test
@@ -61,13 +61,10 @@ jobs:
       - image: rhikimochi/opencv-docker:v0.14
     steps:
       - checkout
-      - run:
-          name: prepare build directory
-          command: |
-            mkdir build && cd build
+      - prepare_for_cmake
       - run:
           name: build gazosan
-          command: cmake .. -DGTEST=OFF && make && cd ..
+          command: cd build && cmake .. -DGTEST=OFF && make && cd ..
       - run:
           name: move static library
           command: mv build/libimageDiffCalc.a libimageDiffCalc.a
