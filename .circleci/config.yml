@@ -35,6 +35,10 @@ jobs:
       - prepare_for_test
       - prepare_for_cmake
       - run:
+          name: debug
+          command: |
+            ls tests/googletest
+      - run:
           name: build unit test
           command: |
             cd build && cmake .. -DGTEST=ON -DTEST_LEVEL=unit && make
