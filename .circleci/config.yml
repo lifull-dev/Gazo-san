@@ -19,12 +19,6 @@ commands:
           key: v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum ".circleci/build_googletest.sh" }}
           paths:
             - tests/googletest
-  prepare_for_cmake:
-    description: "Prepare directory for cmake."
-    steps:
-      - run:
-          name: prepare build directory
-          command: mkdir build && cd build
 jobs:
   google_test:
     working_directory: ~/test
@@ -33,7 +27,10 @@ jobs:
     steps:
       - checkout
       - prepare_for_test
-      - prepare_for_cmake
+      - run:
+          name: prepare build directory
+          command: |
+            mkdir build && cd build
       - run:
           name: build unit test
           command: |
@@ -64,7 +61,10 @@ jobs:
       - image: rhikimochi/opencv-docker:v0.14
     steps:
       - checkout
-      - prepare_for_cmake
+      - run:
+          name: prepare build directory
+          command: |
+            mkdir build && cd build
       - run:
           name: build gazosan
           command: cmake .. -DGTEST=OFF && make && cd ..
