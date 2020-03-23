@@ -30,11 +30,11 @@ jobs:
       - run:
           name: prepare build directory
           command: |
-            mkdir build && cd build
+            mkdir build && cd build && ls && pwd
       - run:
           name: build unit test
           command: |
-            cmake .. -DGTEST=ON -DTEST_LEVEL=unit && make
+            ls && pwd && cmake .. -DGTEST=ON -DTEST_LEVEL=unit && make
       - run:
           name: build integration test
           command: |
