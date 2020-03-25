@@ -6,17 +6,17 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{ checksum ".circleci/build_googletest.sh" }}
+            - v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{ checksum "tests/build_googletest.sh" }}
             - v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-
             - v1-gtest-cache-{{ .Branch }}-
       - run:
           name: download and build google test
           command: |
             if [ ! -d tests/googletest ]; then
-              bash .circleci/build_googletest.sh;
+              bash tests/build_googletest.sh;
             fi
       - save_cache:
-          key: v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum ".circleci/build_googletest.sh" }}
+          key: v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum "tests/build_googletest.sh" }}
           paths:
             - tests/googletest
   prepare_for_cmake:
@@ -64,7 +64,7 @@ jobs:
       - prepare_for_cmake
       - run:
           name: build gazosan
-          command: cd build && cmake .. -DGTEST=OFF && make && cd ..
+          command: cd build && cmake .. && make
       - run:
           name: move static library
           command: mv build/libimageDiffCalc.a libimageDiffCalc.a
