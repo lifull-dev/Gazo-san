@@ -1,42 +1,30 @@
 version: 2.1
 
 commands:
-  prepare_for_build:
-    description: "Prepare for build."
-    steps:
-      - restore_cache:
-          keys:
-            - v1-cxxops-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum ".circleci/cxxops.sh" }}
-            - v1-cxxops-cache-{{ .Branch }}-{{ .Revision }}-
-            - v1-cxxops-cache-{{ .Branch }}-
-      - run: 
-          name: download cxxopts.hpp
-          command: |
-            if [ ! -e include/cxxops.hpp ]; then
-              bash .circleci/cxxops.sh;
-            fi
-      - save_cache:
-          key: v1-cxxops-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum ".circleci/cxxops.sh" }}
-          paths:
-            - include
   prepare_for_test:
     description: "Prepare for test."
     steps:
       - restore_cache:
           keys:
-            - v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{ checksum ".circleci/build_googletest.sh" }}
+            - v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{ checksum "tests/build_googletest.sh" }}
             - v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-
             - v1-gtest-cache-{{ .Branch }}-
       - run:
           name: download and build google test
           command: |
             if [ ! -d tests/googletest ]; then
-              bash .circleci/build_googletest.sh;
+              bash tests/build_googletest.sh;
             fi
       - save_cache:
-          key: v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum ".circleci/cxxops.sh" }}
+          key: v1-gtest-cache-{{ .Branch }}-{{ .Revision }}-{{ checksum "tests/build_googletest.sh" }}
           paths:
             - tests/googletest
+  prepare_for_cmake:
+    description: "Prepare directory for cmake."
+    steps:
+      - run:
+          name: prepare build directory
+          command: mkdir build
 jobs:
   google_test:
     working_directory: ~/test
@@ -44,45 +32,45 @@ jobs:
       - image: rhikimochi/opencv-docker:v0.14
     steps:
       - checkout
-      - prepare_for_build
       - prepare_for_test
+      - prepare_for_cmake
       - run:
           name: build unit test
           command: |
-            g++ -std=c++11 ./tests/unit_tests/imageDiffCalc_test.cpp -o test `pkg-config --cflags --libs opencv` -Isrc -Iinclude -Itests/googletest/include -Ltests/googletest -lgtest -lgtest_main -lpthread
-      - run:
-          name: unit test
-          command: ./test
+            cd build && cmake .. -DGTEST=ON -DTEST_LEVEL=unit && make
       - run:
           name: build integration test
           command: |
-            g++ -std=c++11 ./tests/integration_tests/imageDiffCalc_test.cpp -o test `pkg-config --cflags --libs opencv` -Isrc -Iinclude -Itests/googletest/include -Ltests/googletest -lgtest -lgtest_main -lpthread
-      - run:
-          name: integration test
-          command: ./test
+            cd build && cmake .. -DGTEST=ON -DTEST_LEVEL=integration && make
       - run:
           name: build system test
           command: |
-            g++ -std=c++11 ./tests/system_tests/imageDiffCalc_test.cpp -o test `pkg-config --cflags --libs opencv` -Isrc -Iinclude -Itests/googletest/include -Ltests/googletest -lgtest -lgtest_main -lpthread
+            cd build && cmake .. -DGTEST=ON -DTEST_LEVEL=system && make
       - run:
-          name: syetem test
-          command: ./test
+          name: execute unit test
+          command: ./gazosan_unit_test
+      - run:
+          name: execute integration test
+          command: ./gazosan_integration_test
+      - run:
+          name: execute syetem test
+          command: ./gazosan_system_test
   build_library:
     working_directory: /tmp/build
     docker:
       - image: rhikimochi/opencv-docker:v0.14
     steps:
       - checkout
-      - prepare_for_build
+      - prepare_for_cmake
       - run:
-          name: Make object file
-          command: g++ -std=c++11 ./src/imageDiffCalc.cpp `pkg-config --libs --cflags opencv` -Iinclude -c
+          name: build gazosan
+          command: cd build && cmake .. && make
       - run:
-          name: Make static library
-          command: ar r libimageDiffCalc.a imageDiffCalc.o
+          name: move static library
+          command: mv build/libimageDiffCalc.a libimageDiffCalc.a
       - persist_to_workspace:
           root: /tmp/build
-          paths: 
+          paths:
             - libimageDiffCalc.a
   build_and_deploy_image:
     working_directory: ~/build
@@ -92,13 +80,13 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp/build    
+          at: /tmp/build
       - run:
           name: Move library
           command: mv /tmp/build/libimageDiffCalc.a ~/build/
       - run:
           name: Build and tagged image
-          command: | 
+          command: |
             docker build -t "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}" .
             docker tag "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":"${CIRCLE_TAG/v/}" "$DOCKER_HUB_USER"/"$DOCKER_HUB_REPO":latest
       - run:

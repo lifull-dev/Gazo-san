@@ -76,43 +76,18 @@ Each color stands for:
 
 ## How to build Gazo-san
 
-### Compile with static link library
-
-> Works only on Ubuntu
-
-1. Download static link library file
-
+1. Build Gazo-san by CMake
+```
+mkdir build
+cd build
+cmake ..
+make
+cd ..
+```
+2. Binary file is in bin directory
 ```bash
-curl -OLsS https://github.com/lifull-dev/Gazo-san/releases/download/{VERSION}/libimageDiffCalc.a
-```
-
-2. Compile main.cpp
-
-```bash
-g++ -std=c++11 ./src/main.cpp -L./ -limageDiffCalc -o gazosan `pkg-config --libs opencv`
-```
-
-### Compile with source code
-
-> Works on linux machine or Mac
-
-> Works on gcc version 4.2.1
-
-1. Create directory and Download [cxxopts.hpp](https://github.com/jarro2783/cxxopts/blob/master/include/cxxopts.hpp) into include directory.
-
-```bash
-sh .circleci/cxxops.sh
-```
-
-2. Add include in main.cpp
-```
-#include "imageDiffCalc.cpp"
-```
-
-3. Compile main.cpp
-
-```bash
-g++ -std=c++11 -I include/ ./src/main.cpp -o gazosan `pkg-config --libs --cflags opencv`
+cd bin
+./gazosan
 ```
 
 ## Execute Gazo-san
@@ -143,23 +118,47 @@ sh .circleci/build_googletest.sh
 
 #### Unit test
 
+1. Build unit tests by CMake
+```
+mkdir build
+cd build
+cmake .. -DGTEST=ON -DTEST_LEVEL=unit
+make
+cd ..
+```
+2. Execute unit tests
 ```bash
-g++ -std=c++11 ./tests/unit_tests/imageDiffCalc_test.cpp -o test `pkg-config --cflags --libs opencv` -Isrc -Iinclude -Itests/googletest/include -Ltests/googletest -lgtest -lgtest_main -lpthread
-./test
+./gazosan_unit_test
 ```
 
 #### Integration test
 
+1. Build integration tests by CMake
+```
+mkdir build
+cd build
+cmake .. -DGTEST=ON -DTEST_LEVEL=integration
+make
+cd ..
+```
+2. Execute integration tests
 ```bash
-g++ -std=c++11 ./tests/integration_tests/imageDiffCalc_test.cpp -o test `pkg-config --libs --cflags opencv` -Isrc -Iinclude -Itests/googletest/include -Ltests/googletest -lgtest -lgtest_main -lpthread
-./test
+./gazosan_integration_test
 ```
 
 #### System test
 
+1. Build system tests by CMake
+```
+mkdir build
+cd build
+cmake .. -DGTEST=ON -DTEST_LEVEL=system
+make
+cd ..
+```
+2. Execute system tests
 ```bash
-g++ -std=c++11 ./tests/system_tests/imageDiffCalc_test.cpp -o test `pkg-config --libs --cflags opencv` -Isrc -Iinclude -Itests/googletest/include -Ltests/googletest -lgtest -lgtest_main -lpthread
-./test
+./gazosan_system_test
 ```
 
 ## License
