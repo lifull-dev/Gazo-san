@@ -1,9 +1,9 @@
 #include <iostream>
 
-int ImgSegMain(int argc, char* argv[]);
+int ImgSegMain(int argc, const char** argv);
 bool GetTimeHHMMSS(tm* pTM, std::string& strHHMMSS);
 
-int main(int argc, char* argv[])
+int main(int argc, const char** argv)
 {
 	std::string strHHMMSS_Start;
 	GetTimeHHMMSS(NULL, strHHMMSS_Start);

@@ -71,7 +71,7 @@ bool g_bCreateChangeImg = false;
 
 
 ////////// Global function //////////
-int ImgSegMain(int argc, char* argv[]);
+int ImgSegMain(int argc, const char** argv);
 int ImgSeg00(const std::string& strOldImgFile, const std::string& strNewImgFile);
 void ImgSeg01(const std::string& strImgFile, const std::string& strOutputFolder);
 void ImgSeg02(const std::string& strOldFile, const std::vector<std::string>& strOldPartFileList, const std::string& strNewFile, const std::vector<std::string>& strNewPartFileList, const std::string& strOutputFolder);
@@ -119,7 +119,7 @@ inline void SetProcessErrorMsg(const int& nStepNo)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-int ImgSegMain(int argc, char* argv[])
+int ImgSegMain(int argc, const char** argv)
 {
 	std::clog.setstate(std::ios_base::failbit);
 	std::string strOldFile, strNewFile;
