@@ -101,7 +101,7 @@ protected:
 TEST_F(ImgSegMainTest, GeneralExec) {
     std::string want = "./image_difference_diff.png";
     int argc = 3;
-    char* argv[] = {(char*)"./test", (char*)"tests/images/test_image_new.png", (char*)"tests/images/test_image_old.png"};
+    const char* argv[] = {(char*)"./test", (char*)"tests/images/test_image_new.png", (char*)"tests/images/test_image_old.png"};
     ImgSegMain(argc, argv);
     bool isExists = FileExists(want);
     ASSERT_TRUE(isExists);
@@ -109,7 +109,7 @@ TEST_F(ImgSegMainTest, GeneralExec) {
 
 TEST_F(ImgSegMainTest, NotEnoughArgs) {
     int argc = 2;
-    char* argv[] = {(char*)"./test", (char*)"Not Enough"};
+    const char* argv[] = {(char*)"./test", (char*)"Not Enough"};
     std::string want;
     want.append("Not enough input\n ");
     want.append("-> 1st : Relative path for new color image file\n ");
@@ -123,7 +123,7 @@ TEST_F(ImgSegMainTest, NotEnoughArgs) {
 
 TEST_F(ImgSegMainTest, HelpOption) {
     int argc = 2;
-    char* argv[] = {(char*)"./test", (char*)"--help"};
+    const char* argv[] = {(char*)"./test", (char*)"--help"};
     std::string want;
     want.append("\nUsage:\n  options [OPTION...] positional parameters\n\n  ");
     want.append("-v, --verbose              Enable verbose output message\n  ");
@@ -141,7 +141,7 @@ TEST_F(ImgSegMainTest, HelpOption) {
 
 TEST_F(ImgSegMainTest, VerboseOption) {
     int argc = 4;
-    char* argv[] = {(char*)"./test", (char*)"tests/images/test_image_new.png", (char*)"tests/images/test_image_old.png", (char*)"-v"};
+    const char* argv[] = {(char*)"./test", (char*)"tests/images/test_image_new.png", (char*)"tests/images/test_image_old.png", (char*)"-v"};
     StartRecordClog();
     ImgSegMain(argc, argv);
     std::string got = GetRecordClog();
@@ -151,7 +151,7 @@ TEST_F(ImgSegMainTest, VerboseOption) {
 TEST_F(ImgSegMainTest, CreateChangeImageOption) {
     std::string want = "image_difference_add.png\nimage_difference_delete.png\n";
     int argc = 4;
-    char* argv[] = {(char*)"./test", (char*)"tests/images/test_image_new.png", (char*)"tests/images/test_image_old.png", (char*)"--create-change-image"};
+    const char* argv[] = {(char*)"./test", (char*)"tests/images/test_image_new.png", (char*)"tests/images/test_image_old.png", (char*)"--create-change-image"};
     ImgSegMain(argc, argv);
     std::string got = FindChangeImage();
     ASSERT_EQ(want, got);
