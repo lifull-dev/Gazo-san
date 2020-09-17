@@ -43,7 +43,7 @@ docker run --rm -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_
 
 ### With option --create-change-image
 ```
-docker run --rm -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output --create-change-image
+docker run --rm -it -v `pwd`:/app lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output --create-change-image
 ```
 
 | Output | Output |
