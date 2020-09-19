@@ -182,7 +182,7 @@ int ImgSegMain(int argc, const char** argv)
 	//ImgSeg01
 	{
 		// create new folder under temporary folder, and parts division
-		std::string strOutputFolder = "./image_diff_temp/new/";
+		std::string strOutputFolder = "/tmp/image_diff_temp/new/";
 		CreateDirectory(strOutputFolder);
 		g_nPartFileNo = 1;
 		ImgSeg01(strNewFile, strOutputFolder);
@@ -190,7 +190,7 @@ int ImgSegMain(int argc, const char** argv)
 		g_strFileList.clear();
 
 		// create old folder under temporary folder, and parts division
-		strOutputFolder = "./image_diff_temp/old/";
+		strOutputFolder = "/tmp/image_diff_temp/old/";
 		CreateDirectory(strOutputFolder);
 		g_nPartFileNo = 1;
 		ImgSeg01(strOldFile, strOutputFolder);
@@ -208,7 +208,7 @@ int ImgSegMain(int argc, const char** argv)
 	{
 		std::string strOutputFolder = "./";
 		ImgSeg03(strOldFile, g_strFileDiffInfoListMap, strOutputFolder);
-		if (system("exec rm -r ./image_diff_temp") != 0)
+		if (system("exec rm -r /tmp/image_diff_temp") != 0)
 		{
 			std::cerr << "Fail in delete temp directoty." << std::endl;
 			return -1;

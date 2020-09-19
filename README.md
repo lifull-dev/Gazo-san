@@ -27,7 +27,7 @@ cd Gazo-san
 
 Execute Gazo-san by container
 ```
-docker run --rm -it -v `pwd`:/run lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output
+docker run --rm -it -v `pwd`:/app lifullsetg/gazo-san gazosan tests/images/test_image_new.png tests/images/test_image_old.png output
 ```
 
 | Input | Input |
